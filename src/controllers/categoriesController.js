@@ -12,3 +12,20 @@ export async function getCategories (req, res) {
     }
 
 }
+
+export async function createCategories (req, res) {
+    const { name } = req.body;
+    try{
+        const insertCategory = `
+        INSERT INTO categories (name) VALUES ($1)
+        `;
+        const values = [name];
+        await connection.query(insertCategory, values);
+
+        res.status(201).send("Categoria cadastrada com sucesso!");
+
+    }catch(e){
+        res.status(500).send("Erro ao cadastrar a categoria");
+    }
+
+}
