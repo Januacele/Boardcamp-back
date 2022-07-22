@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { creatGames } from '../controllers/gamesController.js';
+import { getGames, creatGames } from '../controllers/gamesController.js';
 import { gamesMiddlewares } from '../middlewares/gamesMiddlewares.js';
 
 
 const gamesRouter = Router();
 
 
-// gamesRouter.get("/games", getGames);
+gamesRouter.get("/games", getGames);
 gamesRouter.post("/games", gamesMiddlewares, creatGames);
 
 

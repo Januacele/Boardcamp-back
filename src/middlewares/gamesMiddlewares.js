@@ -7,6 +7,7 @@ export async function gamesMiddlewares(req, res){
 
     try {
         let maxId = await connection.query(`SELECT MAX (id) FROM categories`);
+        maxId.rows[0].max ? maxId = maxId.rows[0].max : maxId = 1;
 
         const { error } = gameSchema.validate(game, {abortEarly: false});
 
