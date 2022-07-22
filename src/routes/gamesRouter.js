@@ -1,13 +1,13 @@
 import { Router } from "express";
-//importar controller
-//import middlewares
+import { creatGames } from '../controllers/gamesController.js';
+import { gamesMiddlewares } from '../middlewares/gamesMiddlewares.js';
 
 
-// const gamesRouter = Router();
+const gamesRouter = Router();
 
 
 // gamesRouter.get("/games", getGames);
-// gamesRouter.post("/post", gamesMiddlewares, creatGames);
+gamesRouter.post("/games", gamesMiddlewares, creatGames);
 
 
-// export default gamesRouter;
+export default gamesRouter;

@@ -4,7 +4,7 @@ import categorieSchema from '../schemas/categorieSchema.js';
 
 export async function categoriesMiddlewares(req, res, next) {
     const category = req.body;
-    console.log(category);
+
     try {
         const { error } = categorieSchema.validate(category, { abortEarly: false });
         if (error) {
@@ -17,9 +17,9 @@ export async function categoriesMiddlewares(req, res, next) {
             WHERE name = $1
         `;
         const values = [category.name.toLowerCase()];
-        console.log(values);
+        
         const checkExists = await connection.query(query, values);
-        console.log(checkExists);
+      
         if (checkExists.rowCount !== 0) {
             res.status(409).send("Essa categoria já existe.");
             return;
