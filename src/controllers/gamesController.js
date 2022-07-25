@@ -3,18 +3,16 @@ import connection from "../dbStrategy/dbPostgres.js";
 
 export async function getGames (req, res){
     const filterString = req.query.name;
-    
+
     try {
         if (filterString){
             const query = `
-                SELECT games.*, categories.name AS "categoryName"  
-                FROM games
-                JOIN categories 
-                ON games."categoryId"=categories.id
-                WHERE LOWER(games.name) LIKE '$1%'
+            SELECT games.*  
+            FROM games
+            WHERE games.name LIKE '${filterString}%'
             `;
-            const values = [filterString.toLowerCase()];
-            const games = await connection.query(query,values);
+        
+            const games = await connection.query(query);
 
             res.send(games.rows);
 
@@ -28,11 +26,13 @@ export async function getGames (req, res){
 
             res.send(games.rows);
         }
+
     } catch(error){
         console.log(error);
         res.status(500).send("Ocorreu um erro ao obter os jogos!");
     }
 }
+
 
 
 
