@@ -3,19 +3,19 @@ import connection from "../dbStrategy/dbPostgres.js";
 
 export async function getGames (req, res){
     const filterString = req.query.name;
-    try{
-        if(filterString){
-            const query=`
-            SELECT games.*, categories.name As "CategoryName"
-            FROM games
-            JOIN categories ON games."categoryId" = categorie.id
-            WHERE LOWER(games.name) LIKE '$1%'
+    
+    try {
+        if (filterString){
+            const query = `
+                SELECT games.*, categories.name AS "categoryName"  
+                FROM games
+                JOIN categories 
+                ON games."categoryId"=categories.id
+                WHERE LOWER(games.name) LIKE '$1%'
             `;
-
             const values = [filterString.toLowerCase()];
+            const games = await connection.query(query,values);
 
-            const games = await connection.query(query, values);
-            
             res.send(games.rows);
 
         } else {
@@ -24,13 +24,13 @@ export async function getGames (req, res){
                 FROM games
                 JOIN categories ON games."categoryId"=categories.id
             `;
-            const games = await db.query(query);
+            const games = await connection.query(query);
 
             res.send(games.rows);
         }
-
-    }catch(e){
-        res.status(500).send("Erro ao pegar as categorias");
+    } catch(e){
+        console.log(e);
+        res.status(500).send("Ocorreu um erro ao obter os jogos!");
     }
 }
 

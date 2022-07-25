@@ -2,7 +2,7 @@ import connection from "../dbStrategy/dbPostgres.js";
 import gameSchema from "../schemas/gameSchema.js";
 
 
-export async function gamesMiddlewares(req, res){
+export async function gamesMiddlewares(req, res, next){
     const game = req.body;
 
     try {
@@ -32,4 +32,6 @@ export async function gamesMiddlewares(req, res){
         res.status(500).send("Erro inesperado na validação dos dados.");
         return;
     }
+
+    next();
 }
