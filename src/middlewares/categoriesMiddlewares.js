@@ -13,7 +13,7 @@ export async function categoriesMiddlewares(req, res, next) {
         }
 
         const query = `
-            SELECT name FROM categories
+            SELECT * FROM categories
             WHERE name = $1
         `;
         const values = [category.name.toLowerCase()];
@@ -24,7 +24,7 @@ export async function categoriesMiddlewares(req, res, next) {
             res.status(409).send("Essa categoria já existe.");
             return;
         }
-    } catch (e) {
+    } catch (error) {
         res.status(500).send("Erro inesperado na validação dos dados.");
         return;
     }

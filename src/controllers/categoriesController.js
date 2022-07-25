@@ -7,7 +7,8 @@ export async function getCategories (req, res) {
         const categories = result.rows;
         res.send(categories);
 
-    }catch(e){
+    }catch(error){
+        console.log(error);
         res.status(500).send("Erro ao pegar as categorias");
     }
 
@@ -24,7 +25,8 @@ export async function createCategories (req, res) {
 
         res.status(201).send("Categoria cadastrada com sucesso!");
 
-    }catch(e){
+    }catch(error){
+        console.log(error)
         res.status(500).send("Erro ao cadastrar a categoria");
     }
 
