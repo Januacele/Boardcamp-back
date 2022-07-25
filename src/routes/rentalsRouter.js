@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createRental } from './../controllers/rentalsController.js';
+import { getRentals, createRental } from './../controllers/rentalsController.js';
 import { 
     checkCustomerId,
     checkGameId,
@@ -10,7 +10,7 @@ import {
 
 const rentalsRouter = Router();
 
-
+rentalsRouter.get("/rentals", getRentals);
 rentalsRouter.post("/rentals", daysRentedIsPositive, checkCustomerId, checkGameId, gamesIsAvailable, createRental);
 
 export default rentalsRouter;
