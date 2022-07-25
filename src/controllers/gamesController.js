@@ -28,8 +28,8 @@ export async function getGames (req, res){
 
             res.send(games.rows);
         }
-    } catch(e){
-        console.log(e);
+    } catch(error){
+        console.log(error);
         res.status(500).send("Ocorreu um erro ao obter os jogos!");
     }
 }
@@ -50,7 +50,7 @@ export async function creatGames(req, res){
         res.status(201).send("Jogo cadastrado com sucesso");
 
     } catch (error) {
+        console.log(error);
         res.status(500).send("Erro inesperado no cadastro dos dados.");
-        return;
     }
 }
