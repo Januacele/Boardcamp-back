@@ -131,3 +131,25 @@ export async function checkRentalIsOpen(req, res, next){
     }
     next();
 }
+
+export async function checkRentalIsClosed(req, res, next){
+    const { id } = req.params;
+
+    try {
+        const query = `
+        SELECT rentals."returnDate" FROM rentals
+        WHERE id = $1
+        `;
+        const values = [id];
+        const rentalResult = await connection.query(query, values);
+
+        if (rentalResult.rows[0].returnDate === null) {
+            res.status(400).send("Esse aluguel ainda não foi finalizado.");
+            return;
+        }
+    } catch (error) {
+        res.status(500).send("Erro inesperado na validação dos dados.");
+        return;
+    }
+    next();
+}

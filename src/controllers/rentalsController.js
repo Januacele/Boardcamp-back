@@ -156,3 +156,23 @@ export async function closeRental(req, res){
         res.status(500).send("Ocorreu um erro nessa transação.");
     }
 }
+
+export async function deleteRental(req, res){
+    const { id } = req.params;
+
+    try {
+       const query = `
+       DELETE FROM rentals
+       WHERE id = $1
+       `;
+
+       const values = [id];
+       await connection.query(query, values);
+
+       res.sendStatus(200);
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Ocorreu um erro nessa transação.");
+    }
+}
