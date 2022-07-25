@@ -113,3 +113,46 @@ export async function createRental(req, res){
         res.status(500).send("Ocorreu um erro nessa transação.");
     }
 }
+
+export async function closeRental(req, res){
+    const { id } = req.params;
+
+    try {
+        const queryRental = `
+        SELECT rentals."rentDate", rentals."gameId" FROM rentals
+        WHERE rentals.id = $1
+    `;
+    const valuesRental = [id];
+    const rentalResult = await connection.query(queryRental, valuesRental);
+    const rentDate = rentalResult.rows[0].rentDate;
+    const gameId = rentalResult.rows[0].gameId;
+
+    const queryGamePrice = `
+            SELECT games."pricePerDay" FROM games
+            WHERE games.id = ${gameId}
+        `;
+        const gamePriceResult = await connection.query(queryGamePrice);
+        const pricePerDay = gamePriceResult.rows[0].pricePerDay;
+
+        const todayFormatted = dayjs().format('YYYY-MM-DD');
+        const today = dayjs();
+        const delayedDays = today.diff(rentDate, 'day');
+        const delayFee = pricePerDay * delayedDays;
+
+        const queryUpdate = `
+            UPDATE rentals
+            SET
+                "returnDate" = '${todayFormatted}',
+                "delayFee" = ${delayFee}
+            WHERE id = $1
+        `;
+        const valuesUpdate = [id];
+        await connection.query(queryUpdate,valuesUpdate);
+
+        res.sendStatus(200);
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Ocorreu um erro nessa transação.");
+    }
+}
